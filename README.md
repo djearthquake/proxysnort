@@ -4,9 +4,32 @@ Proxy check for AMX Mod X that runs over **async HTTPS** instead of raw sockets.
 Checks each connecting player's IP against **proxycheck.io**, then applies a
 configurable policy (reserved-slot kick, or the "discombobulate" effects).
 
+> **Linux 32-bit server only for now.** Windows / 64-bit builds are **not**
+> supported yet — the bundled `.so` is i386 and the module source is
+> intentionally Linux-only. Plugins cannot load the module on Windows.
+
 Requires **AMX Mod X 1.10+ (Linux, 32-bit)** and the bundled **HTTP module** —
 without it the plugin fails to load:
 `unknown function (name "http_get")`.
+
+### Dependencies
+
+| Dependency | Why | Install (Debian / Mint) |
+|---|---|---|
+| `libcurl` (runtime) | The `.so` links against it | `sudo apt install libcurl4` |
+| `libcurl4-openssl-dev` + `pkg-config` | Only if building the *module* yourself from source | `sudo apt install libcurl4-openssl-dev pkg-config` |
+| 32-bit libs | HLDS / AMXX are 32-bit | `sudo dpkg --add-architecture i386 && sudo apt update && sudo apt install lib32gcc1 lib32stdc++6` (example) |
+
+Verify the `.so` sees libcurl before starting the server:
+
+```bash
+ldd addons/amxmodx/modules/http_amxx_i386.so | grep curl
+# -> libcurl.so.4 => /usr/lib/x86_64-linux-gnu/libcurl.so.4 (or i386 path)
+```
+
+> Mint is Ubuntu-based, so the same `apt` commands work there. On Debian
+> with the `contrib`/`non-free` split, make sure your sources include them if
+> your mirror needs them for curl deps.
 
 ## How the HTTPS async works
 
