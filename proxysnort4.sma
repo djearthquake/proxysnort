@@ -354,7 +354,7 @@ public Http_OnComplete(request_id, status, error, const body[], data)
 	}
 
 	new id = data;
-	if (id < 1 || id > MaxClients || !is_user_connected(id)
+    if (id < 1 || id > MaxClients /*|| !is_user_connected(id)*/
 		|| request_id != g_http_request[id] || get_user_userid(id) != g_userid[id])
 		return;
 
