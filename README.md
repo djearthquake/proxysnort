@@ -52,10 +52,18 @@ StartFrame() ──► Http_OnComplete() ──► JSON parse → policy / log /
    ```
    http_amxx_i386.so
    ```
-3. Compile `proxysnort4.sma` with `amxxpc` and enable in `plugins.ini`:
+3. Copy `addons/amxmodx/scripting/include/http.inc` to your `scripting/include/`
+   (the `http_get` / `http_post` natives + `http_urlencode()` stock), then
+   compile `proxysnort4.sma` with `amxxpc`:
+   ```
+   ./amxxpc -iaddons/amxmodx/scripting/include -oaddons/amxmodx/plugins/proxysnort4.amxx proxysnort4.sma
+   ```
+   Enable in `plugins.ini`:
    ```
    proxysnort4.amxx
    ```
+   Optional sanity test — compile `addons/amxmodx/scripting/testsuite/http_test.sma`
+   (`amxx_http_test`) the same way and enable it to verify the module first.
 4. In `server.cfg`:
    ```c
    sv_proxycheckio-key   "YOUR_KEY"   // never commit a real key
